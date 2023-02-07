@@ -1,0 +1,45 @@
+<?php
+ // transaction //
+
+    public function henri()
+    {
+       try{
+        $db= $this->dbConnect();
+        $db->beginTransaction();
+        $db->query('SELECT * FROM chater WHERE dire = \'KI\'');
+        $db->query('UPDATE chater SET repondre = \'poli\' WHERE repondre = \'LO\'');
+        $db->commit(); 
+        echo 'tou';
+       }
+       catch(Exception $e) //en cas d'erreur
+       {
+        $db->rollback();
+        echo 'rien';
+        exit();
+       }
+    }
+    public function colline()
+    {
+        $db= $this->dbConnect();
+        $db->exec("LOCK TABLES 'temps' WRITE");
+        $tatou = $db->query('SELECT * FROM temps');
+        $tatin= $tatou->fetchAll();
+        return $tatin;
+    }    
+    public function proceder()
+    {
+        $db= $this->dbConnect();
+        $col = $db->prepare('INSERT INTO co(question,reponse) VALUES (:question,:reponse)');
+        $bidule=$col->execute(array('question'=>$_POST['question'],
+        'reponse'=>$_POST['reponse']));
+        return $bidule;
+
+        $db = $this->dbconnect();
+    
+        $db = ('CREATE TRIGGER okk AFTER INSERT ON co FOR EACH ROW
+        BEGIN 
+        if NEW.question IS NOT NULL
+        THEN
+        INSERT INTO co(question,reponse) VALUES (:question,reponse) END');
+        
+       
